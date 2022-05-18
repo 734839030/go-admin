@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-admin/internal/domain/sys/repository"
 	"go-admin/internal/infrastructure/common/api"
-	"net/http"
 	"strconv"
 )
 
@@ -20,17 +19,17 @@ func NewSysUserController(sysUserRepo *repository.SysUserRepo) SysUserController
 func (w SysUserController) QueryByUserId(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("userId"))
 	if err != nil {
-		c.JSON(http.StatusOK, api.RespError(err.Error()))
+		api.RespErrorWithCode(c, api.PARAM_INVALID, err.Error())
 		return
 	}
-	sysUser, err := w.SysUserRepo.FindById(uint(userId))
+	sysUser, err := w.SysUserRepo.FindById(userId)
 	if err != nil {
-		c.JSON(http.StatusOK, api.RespError(err.Error()))
+		api.RespError(c, err.Error())
 		return
 	}
 	if sysUser != nil {
-		c.JSON(http.StatusOK, api.RespOk(sysUser))
+		api.RespOk(c, sysUser)
 	} else {
-		c.JSON(http.StatusOK, api.RespErrorWithCode(api.RECORD_NOT_FOUND, fmt.Sprintf("user [%d] not found", userId)))
+		api.RespErrorWithCode(c, api.RECORD_NOT_FOUND, fmt.Sprintf("user [%d] not found", userId))
 	}
 }

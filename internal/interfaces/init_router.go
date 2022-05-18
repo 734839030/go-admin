@@ -1,11 +1,13 @@
 package interfaces
 
 import (
-	"github.com/gin-gonic/gin"
+	"go-admin/internal/infrastructure/middleware"
 	"go-admin/wire"
 )
 
-func InitRouters(r *gin.Engine) {
+func InitRouters() {
+	r := middleware.InitGin()
 	sysUserController := wire.InitSysUserController()
 	r.GET("/sys/user/query/:userId", sysUserController.QueryByUserId)
+	middleware.InitHttpServer(r)
 }

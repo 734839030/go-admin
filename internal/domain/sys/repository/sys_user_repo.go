@@ -13,7 +13,7 @@ func NewSysUserRepo(dataSource *database.DataSource) *SysUserRepo {
 	return &SysUserRepo{dataSource}
 }
 
-func (r *SysUserRepo) FindById(userId uint) (*po.SysUser, error) {
+func (r *SysUserRepo) FindById(userId int) (*po.SysUser, error) {
 	var sysUser po.SysUser
 	result := r.dataSource.DB.Limit(1).Find(&sysUser, &po.SysUser{
 		UserId: userId,

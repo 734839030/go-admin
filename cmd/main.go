@@ -1,14 +1,17 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"go-admin/configs"
+	"go-admin/internal/infrastructure/middleware"
 	"go-admin/internal/interfaces"
-	"log"
 )
 
 func main() {
-	log.Printf("Starting....")
-	engine := gin.Default()
-	interfaces.InitRouters(engine)
-	engine.Run(":3200")
+	// 始化配置
+	configs.InitConfig()
+	// 日志系统
+	middleware.InitLog()
+	// 初始化web
+	interfaces.InitRouters()
+
 }

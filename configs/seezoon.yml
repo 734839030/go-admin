@@ -1,0 +1,11 @@
+web:
+  addr: :3200
+  # 优雅关机
+  shutdownTime: 20
+log:
+  filename: seezoon.log
+  maxSize: 1024
+  maxAge: 10
+  level: debug
+  reportCaller: true
+  outputToConsole: true

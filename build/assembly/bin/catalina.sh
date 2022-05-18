@@ -6,7 +6,10 @@ APP_NAME="${WORK_DIR##*/}"
 # 添加全路径是为了进程检测
 PROCESS_CHECK="${WORK_DIR}/bin/${APP_NAME}"
 CONF_DIR=./conf
-source ${CONF_DIR}/setenv.sh
+SHUTDOWN_SECONDS=30
+if [ -f ${CONF_DIR}/setenv.sh ]  ; then
+  source ${CONF_DIR}/setenv.sh
+fi
 echo "WORK_DIR=${WORK_DIR},APP_NAME=${APP_NAME}"
 
 # 启动
