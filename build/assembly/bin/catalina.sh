@@ -5,7 +5,7 @@ cd "${WORK_DIR}"
 APP_NAME="${WORK_DIR##*/}"
 # 添加全路径是为了进程检测
 PROCESS_CHECK="${WORK_DIR}/bin/${APP_NAME}"
-CONF_DIR=./conf
+CONF_DIR=./configs
 SHUTDOWN_SECONDS=30
 if [ -f ${CONF_DIR}/setenv.sh ]  ; then
   source ${CONF_DIR}/setenv.sh
