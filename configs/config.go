@@ -2,8 +2,8 @@ package configs
 
 import (
 	"encoding/json"
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"log"
 	"os"
 	"sync"
 	"time"
@@ -12,6 +12,7 @@ import (
 type Config struct {
 	Web *Web
 	Log *Log
+	Db  *DB
 }
 
 type Web struct {
@@ -30,6 +31,15 @@ type Log struct {
 	ReportCaller    bool
 	OutputToConsole bool
 }
+type DB struct {
+	Dsn          string
+	MaxIdleConns int
+	// S
+	ConnMaxLifetime time.Duration
+	// S
+	ConnMaxIdleTime time.Duration
+	MaxOpenConns    int
+}
 
 var (
 	C    Config
@@ -42,7 +52,7 @@ const (
 	configType = "yml"
 )
 
-func InitConfig() {
+func init() {
 	once.Do(func() {
 		workDir, err := os.Getwd()
 		if err != nil {
@@ -62,7 +72,7 @@ func InitConfig() {
 		if marshal, err := json.Marshal(&C); err != nil {
 			panic(err)
 		} else {
-			logrus.Infof("config is:%s", marshal)
+			log.Printf("config is:%s\n", marshal)
 		}
 	})
 }

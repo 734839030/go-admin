@@ -1,6 +1,7 @@
 package database
 
 import (
+	"go-admin/configs"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -17,7 +18,7 @@ func NewDataSource() *DataSource {
 
 func getDb() *gorm.DB {
 	// https://github.com/go-sql-driver/mysql
-	dsn := "root:@tcp(127.0.0.1:3306)/seezoon?charset=utf8mb4&parseTime=True&loc=Local&timeout=1s"
+	dsn := configs.C.Db.Dsn
 	if gdb, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			// 驼峰表名，不加s
@@ -27,10 +28,10 @@ func getDb() *gorm.DB {
 		panic(err)
 	} else {
 		if db, err := gdb.DB(); nil == err {
-			db.SetMaxIdleConns(1)
-			db.SetConnMaxLifetime(60 * 60 * time.Second)
-			db.SetConnMaxIdleTime(30 * 60 * time.Second)
-			db.SetMaxOpenConns(10)
+			db.SetMaxIdleConns(configs.C.Db.MaxIdleConns)
+			db.SetConnMaxLifetime(configs.C.Db.ConnMaxLifetime * time.Second)
+			db.SetConnMaxIdleTime(configs.C.Db.ConnMaxIdleTime * time.Second)
+			db.SetMaxOpenConns(configs.C.Db.MaxOpenConns)
 		} else {
 			panic(err)
 		}
